@@ -21,22 +21,19 @@ public class CustomWiredFieldCallBack implements ReflectionUtils.FieldCallback {
 
     @Override
     public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-        if (!field.isAnnotationPresent(CustomWired.class)) {
-            return;
+        if (field.isAnnotationPresent(CustomWired.class)) {
+            System.out.println("bean found ");
+            Class<?> dummyService = field.getType();
+            ReflectionUtils.makeAccessible(field);
+            Object dummyServiceInstance = getBeanInstance(dummyService.getSimpleName(), dummyService);
+            System.out.println("bean instance" + dummyServiceInstance);
+            field.set(bean, dummyServiceInstance);
+            System.out.println("bean injected ");
         }
-        System.out.println("bean found ");
-        Class dummyService = field.getType();
-        ReflectionUtils.makeAccessible(field);
-        Object dummyServiceInstance = getBeanInstance(dummyService.getSimpleName(), dummyService);
-        System.out.println("bean instance" + dummyServiceInstance);
-
-        field.set(bean, dummyServiceInstance);
-        System.out.println("bean injected ");
 
     }
 
-    public Object getBeanInstance(
-            String beanName, Class dummyService) {
+    public Object getBeanInstance(String beanName, Class dummyService) {
         Object dummyServiceInstance = null;
         if (!configurableBeanFactory.containsBean(beanName)) {
             System.out.println(beanName + "<><><><><><>" + dummyService);

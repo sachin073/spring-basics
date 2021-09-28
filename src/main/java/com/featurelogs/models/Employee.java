@@ -3,15 +3,15 @@ package com.featurelogs.models;
 import com.featurelogs.annotations.WithinWorkableAge;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class Employee {
-
     Long id;
 
-    @NotNull(message = "name : cannot be blank")
+    @NotNull(message = "cannot be blank")
     String name;
 
-    @WithinWorkableAge(min = 35,max = 54,message = "age : should be within 35 & 54")
+    @WithinWorkableAge(min = 35,max = 54,message = "should be within 35 & 54")
     Integer age;
 
     public Long getId() {

@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD,ElementType.ANNOTATION_TYPE,ElementType.TYPE_USE})
+@Target({ElementType.FIELD})
 @Constraint(validatedBy = WorkableAgeConstraintValidator.class)
 public @interface WithinWorkableAge {
 

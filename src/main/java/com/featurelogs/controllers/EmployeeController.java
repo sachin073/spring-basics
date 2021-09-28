@@ -9,19 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 public class EmployeeController {
     @Autowired
-    private EmployeeService employeeService ;
+    private EmployeeService employeeService;
 
     @CustomWired
     private DummyService service;
@@ -32,7 +30,6 @@ public class EmployeeController {
         employeeService.saveDetails(employee);
         service.print(employee);
 
-
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
 
@@ -41,12 +38,7 @@ public class EmployeeController {
     public class UncaughtExceptionsControllerAdvice {
         @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class})
         public ResponseEntity handleBindingErrors(MethodArgumentNotValidException e) {
-            System.out.println("asc");
-            Map<String, String> errors = new HashMap<>();
-            e.getBindingResult().getAllErrors().stream().forEach(error -> error.getDefaultMessage());
-            //return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-            List<String> ssx = e.getBindingResult().getAllErrors().stream().map(ex -> ex.getDefaultMessage()).collect(Collectors.toList());
-            return new ResponseEntity<>("not valid due to validation error: " + e.getBindingResult().getAllErrors().stream().map(ex -> ex.getDefaultMessage()).collect(Collectors.toList()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getBindingResult().getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage)), HttpStatus.BAD_REQUEST);
         }
     }
 }
