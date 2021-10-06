@@ -8,7 +8,11 @@ plugins {
 
 group = 'com.example'
 version = '0.0.2-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '8'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '7.1.1' 
+}
 
 repositories {
 	mavenCentral()
