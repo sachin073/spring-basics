@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 
 @RestController
 public class EmployeeController {
-    @Autowired
-    private EmployeeService employeeService;
 
     @CustomWired
     private DummyService service;
@@ -33,6 +31,8 @@ public class EmployeeController {
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
 
+    @Autowired
+    private EmployeeService employeeService;
 
     @ControllerAdvice(annotations = {RestController.class})
     public class UncaughtExceptionsControllerAdvice {
